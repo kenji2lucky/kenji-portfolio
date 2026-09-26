@@ -1,0 +1,11 @@
+Put your MP4 portfolio preview files in this folder.
+
+Required names by default:
+hero.mp4
+cta.mp4
+long-01.mp4
+long-02.mp4
+long-03.mp4
+short-01.mp4 through short-08.mp4
+
+You can use different names if you update content.js / the HTML source paths.

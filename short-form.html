@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07090d" />
+  <meta name="description" content="Kenji — Short Form Video Editor portfolio." />
+  <title>Kenji — Video Editor | Short Form</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="short">
+  <header class="site-header shell">
+    <a class="brand" href="index.html" aria-label="Kenji home">
+      <span class="brand-mark">K</span>
+      <span>KENJI</span>
+    </a>
+    <nav class="top-nav" aria-label="Main navigation">
+      <a href="#top">Home</a>
+      <a href="#work">Work</a>
+      <a href="#clients">Clients</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="pill pill-dark" href="#contact">Let's Talk <span>↗</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero shell media-panel">
+      <video class="panel-video hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.svg">
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+      <div class="panel-shade"></div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">VIDEO EDITOR</p>
+          <h1>KENJI</h1>
+          <h2>Stories that keep<br />people watching.</h2>
+          <p class="hero-text">I help creators and brands turn ideas into polished, scroll-stopping edits built for retention.</p>
+          <div class="hero-actions">
+            <a class="pill pill-light" href="#work">See My Work <span>↓</span></a>
+            <a class="pill pill-glass" href="#contact">Get In Touch</a>
+          </div>
+        </div>
+        <div class="avatar-wrap" aria-hidden="true">
+          <img src="assets/kenji-avatar.svg" alt="" />
+          <span class="avatar-ring"></span>
+        </div>
+      </div>
+      <div class="video-status"><span class="status-dot"></span> Looping hero video · Muted</div>
+    </section>
+
+    <section id="clients" class="section shell clients-section">
+      <div class="section-heading centered">
+        <p class="eyebrow">CLIENTS</p>
+        <h2>Creators & brands I've worked with.</h2>
+      </div>
+      <div id="clientsGrid" class="clients-grid"></div>
+    </section>
+
+    <section id="work" class="section shell">
+      <div class="format-switch" aria-label="Portfolio format switch">
+        <a class="format-link" href="index.html">Long Form</a>
+        <a class="format-link active" href="short-form.html">Short Form</a>
+      </div>
+      <div class="section-heading split-heading">
+        <div>
+          <p class="eyebrow">SHORT FORM CONTENT</p>
+          <h2>Selected edits</h2>
+        </div>
+        <p>Fast pacing. Bigger reach. Real results.</p>
+      </div>
+      <div id="shortGrid" class="short-grid"></div>
+    </section>
+
+    <section id="contact" class="shell media-panel cta-panel">
+      <video class="panel-video" autoplay muted loop playsinline preload="metadata" poster="assets/cta-poster.svg">
+        <source src="assets/cta.mp4" type="video/mp4" />
+      </video>
+      <div class="panel-shade strong"></div>
+      <div class="cta-content">
+        <div>
+          <p class="eyebrow">AVAILABLE FOR PROJECTS</p>
+          <h2>LET'S WORK<br />TOGETHER</h2>
+        </div>
+        <div class="cta-side">
+          <p>Have a project in mind? Let's create something people don't scroll past.</p>
+          <a class="pill pill-light" href="mailto:your@email.com">Get In Touch <span>↗</span></a>
+        </div>
+      </div>
+      <div class="video-status"><span class="status-dot"></span> Looping CTA video · Muted</div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <div>
+      <strong>KENJI</strong>
+      <p>Video Editor for Creators & Brands</p>
+    </div>
+    <div class="footer-socials">
+      <a href="#" aria-label="YouTube">YT</a>
+      <a href="#" aria-label="X / Twitter">X</a>
+      <a href="#" aria-label="Instagram">IG</a>
+      <a href="mailto:your@email.com" aria-label="Email">@</a>
+    </div>
+    <p>© <span id="year"></span> Kenji.</p>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

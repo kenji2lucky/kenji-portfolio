@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+      <rect width="200" height="200" rx="100" fill="#0a0f16"/>
+      <circle cx="100" cy="100" r="76" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="4"/>
+      <text x="100" y="122" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="800">C4</text>
+    </svg>
