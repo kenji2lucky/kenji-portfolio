@@ -90,3 +90,13 @@ When you get work you want to feature, you only need to add it to `content.js`.
 5. Save.
 
 `index.html` is already the homepage.
+
+
+## Mux video setup
+
+Long-form project videos are now streamed from Mux using `playbackId` values in `content.js`. You do not need to upload the large source videos to GitHub. To replace a project later, update its `title`, `playbackId`, and `link` in `content.js`. The `link` can use `https://player.mux.com/YOUR_PLAYBACK_ID` to open the full player.
+
+
+### Hero + CTA videos
+
+The hero and CTA currently use poster artwork only, so there are no missing-video errors while those animations are unfinished. When you have the final loops, add the MP4 files and restore them as the source for the `.panel-video` elements, or update the site to stream them from Mux too.

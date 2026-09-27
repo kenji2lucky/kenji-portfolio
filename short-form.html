@@ -7,6 +7,7 @@
   <meta name="description" content="Kenji — Short Form Video Editor portfolio." />
   <title>Kenji — Video Editor | Short Form</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
 </head>
 <body data-page="short">
   <header class="site-header shell">
@@ -25,9 +26,7 @@
 
   <main id="top">
     <section class="hero shell media-panel">
-      <video class="panel-video hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.svg">
-        <source src="assets/hero.mp4" type="video/mp4" />
-      </video>
+      <video class="panel-video hero-video" muted loop playsinline preload="metadata" poster="assets/hero-poster.svg" aria-label="Hero video placeholder"></video>
       <div class="panel-shade"></div>
       <div class="hero-grid">
         <div class="hero-copy">
@@ -72,9 +71,7 @@
     </section>
 
     <section id="contact" class="shell media-panel cta-panel">
-      <video class="panel-video" autoplay muted loop playsinline preload="metadata" poster="assets/cta-poster.svg">
-        <source src="assets/cta.mp4" type="video/mp4" />
-      </video>
+      <video class="panel-video" muted loop playsinline preload="metadata" poster="assets/cta-poster.svg" aria-label="CTA video placeholder"></video>
       <div class="panel-shade strong"></div>
       <div class="cta-content">
         <div>
@@ -83,7 +80,7 @@
         </div>
         <div class="cta-side">
           <p>Have a project in mind? Let's create something people don't scroll past.</p>
-          <a class="pill pill-light" href="mailto:your@email.com">Get In Touch <span>↗</span></a>
+          <a class="pill pill-light" href="https://discord.com/users/986068729307754496" target="_blank" rel="noreferrer">Get In Touch <span>↗</span></a>
         </div>
       </div>
       <div class="video-status"><span class="status-dot"></span> Looping CTA video · Muted</div>
@@ -96,15 +93,13 @@
       <p>Video Editor for Creators & Brands</p>
     </div>
     <div class="footer-socials">
-      <a href="#" aria-label="YouTube">YT</a>
-      <a href="#" aria-label="X / Twitter">X</a>
-      <a href="#" aria-label="Instagram">IG</a>
-      <a href="mailto:your@email.com" aria-label="Email">@</a>
+      <a href="https://x.com/Kenji2lucky" target="_blank" rel="noreferrer" aria-label="X / Twitter">X</a>
+      <a href="https://discord.com/users/986068729307754496" target="_blank" rel="noreferrer" aria-label="Discord">DC</a>
     </div>
     <p>© <span id="year"></span> Kenji.</p>
   </footer>
 
-  <script src="content.js"></script>
-  <script src="script.js"></script>
+  <script src="content.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

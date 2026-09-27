@@ -36,18 +36,32 @@ function clientCard(client) {
 }
 
 function mediaMarkup(project, orientation) {
-  const video = project.video && String(project.video).trim()
-    ? `<video class="portfolio-video" muted loop playsinline preload="metadata"${project.poster ? ` poster="${project.poster}"` : ""}>
-         <source src="${project.video}" type="video/mp4" />
-       </video>`
-    : project.poster
-      ? `<img class="portfolio-poster" src="${project.poster}" alt="" />`
-      : `<div class="media-placeholder" aria-hidden="true"></div>`;
+  const mux = project.playbackId && String(project.playbackId).trim()
+    ? `<mux-player
+         class="portfolio-video mux-preview"
+         playback-id="${project.playbackId}"
+         metadata-video-title="${project.title || "Portfolio project"}"
+         muted
+         loop
+         playsinline
+         preload="metadata"
+         nohotkeys
+         style="--controls: none;"
+       ></mux-player>`
+    : project.video && String(project.video).trim()
+      ? `<video class="portfolio-video" muted loop playsinline preload="metadata"${project.poster ? ` poster="${project.poster}"` : ""}>
+           <source src="${project.video}" type="video/mp4" />
+         </video>`
+      : project.poster
+        ? `<img class="portfolio-poster" src="${project.poster}" alt="" />`
+        : `<div class="media-placeholder" aria-hidden="true"></div>`;
+
+  const hasVideo = Boolean(project.playbackId || project.video);
 
   return `
     <div class="video-frame ${orientation}">
-      ${video}
-      ${project.video ? `<span class="video-chip">MUTED AUTOPLAY</span>` : ""}
+      ${mux}
+      ${hasVideo ? `<span class="video-chip">MUTED AUTOPLAY</span>` : ""}
     </div>
   `;
 }
