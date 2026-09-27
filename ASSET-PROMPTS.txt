@@ -1,0 +1,17 @@
+Use case: illustration-story
+Asset type: Standalone website hero artwork only, landscape 3:2.
+Primary request: A bold GTA-inspired comic illustration of a Los Santos sunset skyline with tall palms, one helicopter, and a black sports car in the foreground. Purple and hot orange sky, dark plum skyscrapers, coral light, deep black shadows, cream distressed print edges.
+Input images: Image 1 is a style reference for sunset color and distressed print texture; Image 2 is a composition reference ONLY for its right-hand illustration made from three separated tall angular rectangular panels. Generate only that kind of artwork, never the surrounding website.
+Composition: Exactly three tall angular rectangular comic panels separated by thick irregular black diagonal gutters. A continuous sunset city scene spans them: helicopter over palms in left panel, skyline in center panel, black sports car in right and lower foreground. The three panels together fill a landscape 3:2 canvas. Bold cropped car, city silhouettes, warm reflective street, high contrast graphic ink.
+Materials: Screenprinted grain, scratched black ink and torn cream paper distress subtly around outer edges.
+Constraints: ART ONLY. No text, no words, no lettering, no logos, no UI, no buttons, no navigation, no labels, no badges, no interface, no watermark. Do not reproduce the website or typography from either reference.
+
+---
+
+Use case: illustration-story
+Asset type: Standalone website bottom decorative banner artwork only, very wide landscape 3:1.
+Primary request: Monochrome cream and black comic illustration of a Los Santos palm-lined street, distant city skyline, and black sports car driving toward the horizon. Match the distressed ink on aged cream paper aesthetic in the bottom right illustration of reference image 1.
+Input images: Image 1 is only a style and scene reference, not an edit target. Ignore all website content and typography.
+Composition: Panoramic cinematic street scene, palms framing skyline, car in lower right, low buildings and street perspective extending across full width. Dense black ink linework and cream paper highlights. A single small abstract red pen slash near a corner, never writing.
+Materials: Distressed paper, subtle creases, worn ink, black and cream only except the small red pen accent.
+Constraints: ART ONLY. No text, no words, no lettering, no handwritten words, no logos, no UI, no buttons, no navigation, no labels, no badges, no interface, no watermark. No extra frames containing content.
