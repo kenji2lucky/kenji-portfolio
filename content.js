@@ -10,7 +10,7 @@ export const SITE_CONTENT = {
     {
       name: "LIRO_LIRO01",
       image: "./assets/clients/client-liro.png",
-      url: "",
+      url: "https://www.tiktok.com/@liro_liro011",
       alt: "Liro_Liro01 client case file",
     },
   ],
