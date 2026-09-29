@@ -12,9 +12,11 @@ body {
   color: var(--paper);
   overflow-x: hidden;
 }
-img { max-width: 100%; }
+img { max-width: 100%; height: auto; }
 a { color: inherit; }
 
+/* Every Photoshop plate is the source of truth for its own aspect ratio.
+   The browser only scales it proportionally; it never forces a section height. */
 .site { width: 100%; background: var(--ink); }
 .art-section {
   position: relative;
@@ -26,7 +28,8 @@ a { color: inherit; }
 .section-art {
   display: block;
   width: 100%;
-  height: auto;
+  height: auto !important;
+  max-width: none;
   user-select: none;
   pointer-events: none;
 }
@@ -34,7 +37,7 @@ a { color: inherit; }
 .hotspot {
   position: absolute;
   display: block;
-  z-index: 20;
+  z-index: 30;
   cursor: pointer;
   border-radius: 2px;
 }
@@ -45,7 +48,7 @@ a { color: inherit; }
   outline-offset: 3px;
 }
 
-/* HERO: source art is 2048 × 808. Coordinates are percentages of that art. */
+/* HERO: percentage coordinates stay attached to the artwork as it scales. */
 .hero-work {
   left: 11.1%; top: 75.2%; width: 15.2%; height: 10.7%;
 }
@@ -53,7 +56,7 @@ a { color: inherit; }
   left: 27.4%; top: 75.1%; width: 15.5%; height: 10.7%;
 }
 
-/* CLIENTS: source art is 2048 × 568. Client cards are individual transparent PNGs. */
+/* CLIENTS */
 .client-slots {
   position: absolute;
   z-index: 5;
@@ -78,38 +81,62 @@ a { color: inherit; }
 .client-card img,
 .client-card-static img { display: block; width: 100%; height: auto; }
 
-/* FEATURED WORKS: source art is 2048 × 1176. */
+/* FEATURED WORKS
+   Coordinates are tied to the 2048×1176 Photoshop plate and expressed as
+   percentages, so a future 4096×2352 export with the same composition drops in
+   without changing the CSS. */
 .featured-section { isolation: isolate; }
+
+.featured-controls-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
 
 .project-video,
 .project-title,
 .project-duration,
 .project-open {
   position: absolute;
-  z-index: 8;
 }
 
+/* The Mux windows have been re-measured from the finished artwork.
+   They are larger than the previous build and line up with the actual preview areas. */
 .project-video {
-  left: 43.9%;
-  width: 52.7%;
-  height: 25.0%;
+  left: 43.65234375%;
+  width: 53.076171875%;
   overflow: hidden;
   background: transparent;
   pointer-events: none;
+  z-index: 5;
 }
+
 .project-video mux-player {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  aspect-ratio: auto !important;
   --controls: none;
-  --media-object-fit: cover;
+  --media-object-size: cover;
   --media-object-position: center;
   background: transparent;
+  opacity: 0;
+  transition: opacity 140ms linear;
 }
+.project-video.is-ready mux-player { opacity: 1; }
+.project-video mux-player::part(poster) { object-fit: cover; }
 
 .project-title {
   left: 14.7%;
   width: 27.5%;
+  z-index: 12;
   color: #efe3cb;
   font-family: "Anton", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: clamp(12px, 1.62vw, 34px);
@@ -123,7 +150,8 @@ a { color: inherit; }
 .project-duration {
   left: 88.9%;
   width: 6.3%;
-  height: 4.3%;
+  height: 4.5%;
+  z-index: 13;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,33 +167,39 @@ a { color: inherit; }
   padding: 0;
   background: transparent;
   cursor: pointer;
-  z-index: 12;
+  z-index: 20;
 }
 .project-open.video-hit {
-  left: 43.9%; width: 52.7%; height: 25.0%;
+  left: 43.65234375%;
+  width: 53.076171875%;
 }
 .project-open.play-hit {
-  left: 16.1%; width: 12.7%; height: 6.1%;
+  left: 16.1%;
+  width: 12.7%;
+  height: 6.1%;
 }
 
-/* Per-row vertical placement. */
-.row-1.project-video, .row-1.project-open.video-hit { top: 12.55%; }
-.row-2.project-video, .row-2.project-open.video-hit { top: 40.45%; }
-.row-3.project-video, .row-3.project-open.video-hit { top: 68.35%; }
+/* Re-measured video windows. */
+.row-1.project-video, .row-1.project-open.video-hit { top: 11.9897959184%; height: 26.2755102041%; }
+.row-2.project-video, .row-2.project-open.video-hit { top: 40.7312925170%; height: 26.5306122449%; }
+.row-3.project-video, .row-3.project-open.video-hit { top: 69.5578231293%; height: 26.7857142857%; }
 
+/* Title holes in the left information panels. */
 .row-1.project-title { top: 16.0%; }
 .row-2.project-title { top: 44.0%; }
 .row-3.project-title { top: 71.8%; }
 
-.row-1.project-duration { top: 13.85%; }
-.row-2.project-duration { top: 41.75%; }
-.row-3.project-duration { top: 69.7%; }
+/* Duration text sits over the original black duration plates, which are restored
+   above the moving video by featured-controls-overlay.png. */
+.row-1.project-duration { top: 13.95%; }
+.row-2.project-duration { top: 42.69%; }
+.row-3.project-duration { top: 71.34%; }
 
 .row-1.project-open.play-hit { top: 30.2%; }
 .row-2.project-open.play-hit { top: 58.2%; }
 .row-3.project-open.play-hit { top: 86.0%; }
 
-/* FOOTER: source art is 2048 × 532. */
+/* FOOTER */
 .footer-discord { left: 30.2%; top: 25.5%; width: 5.6%; height: 20.0%; }
 .footer-x       { left: 30.2%; top: 48.5%; width: 5.6%; height: 20.5%; }
 
@@ -196,8 +230,6 @@ a { color: inherit; }
   cursor: pointer;
 }
 
-/* Mobile: preserve the artwork exactly, while keeping dynamic text readable enough.
-   A dedicated mobile art set can be added later without changing the content logic. */
 @media (max-width: 700px) {
   .project-title {
     font-size: clamp(8px, 1.62vw, 12px);
@@ -210,4 +242,5 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .client-card { transition: none; }
+  .project-video mux-player { transition: none; }
 }

@@ -1,12 +1,16 @@
-# Verification notes
+# Validation
 
-Checked September 27, 2026:
+Checked before packaging:
 
-- Both JavaScript files passed syntax checks.
-- All three supplied Mux HLS stream URLs returned HTTP 200.
-- All three Mux thumbnail URLs returned HTTP 200 with image content.
-- The pinned Mux Player bundle is available from jsDelivr.
-- DOM-level checks passed for three project cards, empty-client section removal, populated client dossiers, project-relative links, muted preview requests at the visibility threshold, offscreen pausing, pause/resume control, full-player ID and open/close behavior, preview suspension during the dialog, and missing-avatar/banner/art fallbacks.
-- The ZIP includes the complete site, both independent generated banner assets, and the upload/editing guide.
+- `script.js` syntax: passed (`node --check`)
+- `content.js` syntax: passed (`node --check`)
+- all local asset paths referenced by `index.html`: present
+- favicon files: present (512×512 + 180×180)
+- Featured Works controls overlay: present and matches the 2048×1176 shell
+- Liro link in `content.js`: `https://www.tiktok.com/@liro_liro011`
+- three Mux Playback IDs preserved exactly
+- project titles remain dynamic HTML in Anton
+- duration remains automatic from Mux metadata
+- empty client array still hides the whole Clients section
 
-Limit: browser rendering and actual audiovisual playback were not verified. The in-app preview could not connect, and the separate test browser was blocked by the local environment's process permissions. DOM-level tests exercise page logic using simulated player methods; they do not prove video decoding, autoplay permission, visual fit, or audio behavior. Responsive CSS is included, but desktop/mobile visual inspection remains recommended after GitHub Pages publishes.
+The local browser runtime in this workspace blocks local/network browser navigation, so final live Mux playback should be checked after GitHub Pages deploys. The JavaScript and local file references were validated statically.

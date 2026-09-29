@@ -37,7 +37,7 @@ function renderClients() {
       link.href = client.url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.setAttribute("aria-label", `Open ${client.name || "client"} channel`);
+      link.setAttribute("aria-label", `Open ${client.name || "client"} profile`);
       link.append(image);
       slots.append(link);
     } else {
@@ -55,15 +55,23 @@ function makeProjectOverlay(project, index) {
 
   const videoWrap = document.createElement("div");
   videoWrap.className = `project-video row-${row}`;
+
   const player = document.createElement("mux-player");
   player.setAttribute("playback-id", project.playbackId);
   player.setAttribute("metadata-video-id", project.playbackId);
   player.setAttribute("metadata-video-title", project.title);
+  player.setAttribute("stream-type", "on-demand");
   player.setAttribute("preload", "metadata");
   player.setAttribute("playsinline", "");
   player.muted = true;
   player.defaultMuted = true;
   videoWrap.append(player);
+
+  /* Keep the Photoshop preview visible until the real stream is ready, then
+     reveal Mux in the exact same window. */
+  const showPlayer = () => videoWrap.classList.add("is-ready");
+  player.addEventListener("loadeddata", showPlayer, { once: true });
+  player.addEventListener("canplay", showPlayer, { once: true });
 
   const title = document.createElement("div");
   title.className = `project-title row-${row}`;
@@ -102,6 +110,7 @@ let activePreview = null;
 function chooseActivePreview() {
   let best = null;
   let bestRatio = 0;
+
   for (const player of previewPlayers) {
     const ratio = ratios.get(player) || 0;
     if (ratio > bestRatio) {
@@ -161,13 +170,16 @@ function openFullPlayer(project) {
   player.setAttribute("playback-id", project.playbackId);
   player.setAttribute("metadata-video-id", project.playbackId);
   player.setAttribute("metadata-video-title", project.title);
+  player.setAttribute("stream-type", "on-demand");
   player.setAttribute("playsinline", "");
   player.setAttribute("autoplay", "any");
   player.title = project.title;
   wrap.append(player);
 
   dialog.showModal();
-  requestAnimationFrame(() => { if (typeof player.play === "function") player.play().catch(() => {}); });
+  requestAnimationFrame(() => {
+    if (typeof player.play === "function") player.play().catch(() => {});
+  });
 }
 
 function closeFullPlayer() {
@@ -178,10 +190,8 @@ function closeFullPlayer() {
 }
 
 function wireSocials() {
-  const x = $("#x-link");
-  const discord = $("#discord-link");
-  x.href = SITE_CONTENT.socials.x;
-  discord.href = SITE_CONTENT.socials.discord;
+  $("#x-link").href = SITE_CONTENT.socials.x;
+  $("#discord-link").href = SITE_CONTENT.socials.discord;
 }
 
 renderClients();

@@ -4,8 +4,6 @@ export const SITE_CONTENT = {
     discord: "https://discord.com/users/986068729307754496",
   },
 
-  // Add the exact channel URL when you have it. If url is blank, the card
-  // remains visible but is not clickable, so there are no broken links.
   clients: [
     {
       name: "LIRO_LIRO01",
