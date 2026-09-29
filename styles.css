@@ -111,7 +111,9 @@ a { color: inherit; }
   left: 43.65234375%;
   width: 53.076171875%;
   overflow: hidden;
-  background: transparent;
+  /* Solid black underlay prevents the baked Photoshop preview from peeking
+     through around/behind the live Mux stream. */
+  background: #000;
   pointer-events: none;
   z-index: 5;
 }
@@ -126,12 +128,19 @@ a { color: inherit; }
   --controls: none;
   --media-object-size: cover;
   --media-object-position: center;
-  background: transparent;
+  background: #000;
   opacity: 0;
   transition: opacity 140ms linear;
 }
 .project-video.is-ready mux-player { opacity: 1; }
 .project-video mux-player::part(poster) { object-fit: cover; }
+
+.project-video mux-player::part(video) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
 .project-title {
   left: 14.7%;
@@ -148,16 +157,23 @@ a { color: inherit; }
 }
 
 .project-duration {
-  left: 88.9%;
-  width: 6.3%;
-  height: 4.5%;
-  z-index: 13;
+  /* Exact rectangle measured from the 2048×1176 Photoshop shell:
+     x=1813, width=144, height=48. CSS recreates the plate instead of
+     letting the moving video or old artwork show through it. */
+  left: 88.525390625%;
+  width: 7.03125%;
+  height: 4.0816326531%;
+  z-index: 14;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background: #020202;
+  border: 1px solid rgba(239, 227, 203, .86);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.9), 0 1px 3px rgba(0,0,0,.75);
   color: #efe3cb;
-  font: 700 clamp(8px, .9vw, 18px)/1 "Courier New", monospace;
-  letter-spacing: .02em;
+  font: 700 clamp(7px, .82vw, 17px)/1 "Courier New", monospace;
+  letter-spacing: .015em;
   white-space: nowrap;
   pointer-events: none;
 }
@@ -189,11 +205,11 @@ a { color: inherit; }
 .row-2.project-title { top: 44.0%; }
 .row-3.project-title { top: 71.8%; }
 
-/* Duration text sits over the original black duration plates, which are restored
-   above the moving video by featured-controls-overlay.png. */
-.row-1.project-duration { top: 13.95%; }
-.row-2.project-duration { top: 42.69%; }
-.row-3.project-duration { top: 71.34%; }
+/* Duration text sits inside clean CSS-drawn black plates. The Photoshop duration
+   rectangles are removed from the overlay so there is no double-art / bleed. */
+.row-1.project-duration { top: 14.0306122449%; }
+.row-2.project-duration { top: 42.7721088435%; }
+.row-3.project-duration { top: 71.8537414966%; }
 
 .row-1.project-open.play-hit { top: 30.2%; }
 .row-2.project-open.play-hit { top: 58.2%; }
@@ -235,7 +251,7 @@ a { color: inherit; }
     font-size: clamp(8px, 1.62vw, 12px);
     line-height: 1.04;
   }
-  .project-duration { font-size: clamp(6px, .9vw, 8px); }
+  .project-duration { font-size: clamp(6px, .82vw, 8px); }
   .client-slots { gap: 2.5%; }
 }
 

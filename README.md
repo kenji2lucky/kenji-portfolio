@@ -1,5 +1,13 @@
 # Kenji2Lucky Portfolio — Fixed Build
 
+
+## Latest fix pass
+
+- Added a multi-size `favicon.ico` plus 16px/32px PNG favicons using the K2L dice logo. The HTML uses a version query (`?v=7`) to break aggressive browser favicon caches.
+- Featured Works video slots now have a solid black underlay, so the baked preview image cannot peek through behind the live Mux video.
+- Duration boxes are now drawn as clean black HTML/CSS plates at the exact coordinates measured from the Photoshop artwork, with the real Mux duration centered inside.
+- The old duration-plate pixels were removed from `featured-controls-overlay.png`; that overlay now exists only to preserve the artwork's play-button graphics.
+
 This build keeps your Photoshop artwork as the visual source of truth and fixes the web implementation around it.
 
 ## What changed in this version
