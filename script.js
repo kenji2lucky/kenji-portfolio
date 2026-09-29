@@ -1,185 +1,197 @@
+import { SITE_CONTENT } from "./content.js";
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-function hasRealUrl(url) {
-  if (!url) return false;
-  const value = String(url).trim();
-  return value !== "" && value !== "#" && !value.toLowerCase().startsWith("javascript:");
+function formatDuration(seconds) {
+  if (!Number.isFinite(seconds) || seconds <= 0) return "--:--";
+  const total = Math.round(seconds);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const secs = total % 60;
+  if (hours > 0) return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  return `${minutes}:${String(secs).padStart(2, "0")}`;
 }
 
-function optionalText(tag, value, className = "") {
-  if (!value || !String(value).trim()) return "";
-  const cls = className ? ` class="${className}"` : "";
-  return `<${tag}${cls}>${value}</${tag}>`;
-}
+function renderClients() {
+  const section = $("#clients");
+  const slots = $("#client-slots");
+  const clients = SITE_CONTENT.clients ?? [];
 
-function clientCard(client) {
-  const linked = hasRealUrl(client.url);
-  const tag = linked ? "a" : "div";
-  const attrs = linked ? ` href="${client.url}" target="_blank" rel="noreferrer"` : "";
-  const image = client.image
-    ? `<span class="client-avatar"><img src="${client.image}" alt="${client.name || "Client"}" /></span>`
-    : "";
-  const channel = optionalText("span", client.channel);
-  const stat = optionalText("small", client.stat);
-  const view = linked ? "<u>View Channel ↗</u>" : "";
-
-  return `
-    <${tag} class="client-card${linked ? "" : " is-static"}"${attrs}>
-      ${image}
-      ${optionalText("strong", client.name || "Client")}
-      ${channel}
-      ${stat}
-      ${view}
-    </${tag}>
-  `;
-}
-
-function mediaMarkup(project, orientation) {
-  const mux = project.playbackId && String(project.playbackId).trim()
-    ? `<mux-player
-         class="portfolio-video mux-preview"
-         playback-id="${project.playbackId}"
-         metadata-video-title="${project.title || "Portfolio project"}"
-         muted
-         loop
-         playsinline
-         preload="metadata"
-         nohotkeys
-         style="--controls: none;"
-       ></mux-player>`
-    : project.video && String(project.video).trim()
-      ? `<video class="portfolio-video" muted loop playsinline preload="metadata"${project.poster ? ` poster="${project.poster}"` : ""}>
-           <source src="${project.video}" type="video/mp4" />
-         </video>`
-      : project.poster
-        ? `<img class="portfolio-poster" src="${project.poster}" alt="" />`
-        : `<div class="media-placeholder" aria-hidden="true"></div>`;
-
-  const hasVideo = Boolean(project.playbackId || project.video);
-
-  return `
-    <div class="video-frame ${orientation}">
-      ${mux}
-      ${hasVideo ? `<span class="video-chip">MUTED AUTOPLAY</span>` : ""}
-    </div>
-  `;
-}
-
-function longCard(project) {
-  const linked = hasRealUrl(project.link);
-  const tag = linked ? "a" : "div";
-  const attrs = linked ? ` href="${project.link}" target="_blank" rel="noreferrer" aria-label="Open ${project.title}"` : "";
-
-  return `
-    <article class="project-card long-card${linked ? "" : " is-static"}">
-      <${tag} class="project-inner"${attrs}>
-        ${mediaMarkup(project, "landscape")}
-        <div class="project-info">
-          <div>
-            <h3>${project.title}</h3>
-            ${optionalText("p", project.client)}
-          </div>
-          ${optionalText("span", project.meta)}
-        </div>
-      </${tag}>
-    </article>
-  `;
-}
-
-function shortCard(project) {
-  const linked = hasRealUrl(project.link);
-  const tag = linked ? "a" : "div";
-  const attrs = linked ? ` href="${project.link}" target="_blank" rel="noreferrer" aria-label="Open ${project.title}"` : "";
-
-  return `
-    <article class="project-card short-card${linked ? "" : " is-static"}">
-      <${tag} class="project-inner"${attrs}>
-        ${mediaMarkup(project, "portrait")}
-        <h3>${project.title}</h3>
-        ${optionalText("p", project.client)}
-      </${tag}>
-    </article>
-  `;
-}
-
-const safeClients = Array.isArray(clients) ? clients : [];
-const safeLong = Array.isArray(longFormProjects) ? longFormProjects : [];
-const safeShort = Array.isArray(shortFormProjects) ? shortFormProjects : [];
-
-const hasClients = safeClients.length > 0;
-const hasLong = safeLong.length > 0;
-const hasShort = safeShort.length > 0;
-const hasAnyWork = hasLong || hasShort;
-const currentPage = document.body.dataset.page;
-
-// Never leave a visitor on an empty portfolio page.
-if (currentPage === "short" && !hasShort && hasLong) {
-  window.location.replace("index.html#work");
-} else if (currentPage === "long" && !hasLong && hasShort) {
-  window.location.replace("short-form.html#work");
-} else {
-  // Clients: hide the ENTIRE section and nav item when there is no client data.
-  const clientsSection = $("#clients");
-  if (!hasClients) {
-    if (clientsSection) clientsSection.hidden = true;
-    $$("a[href='#clients']").forEach((link) => link.hidden = true);
-  } else {
-    const clientsGrid = $("#clientsGrid");
-    if (clientsGrid) clientsGrid.innerHTML = safeClients.map(clientCard).join("");
+  if (!clients.length) {
+    section.hidden = true;
+    return;
   }
 
-  // Work: only render the current format.
-  const longGrid = $("#longGrid");
-  if (longGrid && hasLong) longGrid.innerHTML = safeLong.map(longCard).join("");
+  section.hidden = false;
+  slots.replaceChildren();
 
-  const shortGrid = $("#shortGrid");
-  if (shortGrid && hasShort) shortGrid.innerHTML = safeShort.map(shortCard).join("");
+  clients.slice(0, 3).forEach((client) => {
+    const image = document.createElement("img");
+    image.src = client.image;
+    image.alt = client.alt || client.name || "Client case file";
 
-  // Format switch: if there is only one format, there is nothing to switch to.
-  const switcher = $(".format-switch");
-  if (switcher) {
-    if (!(hasLong && hasShort)) {
-      switcher.hidden = true;
+    if (client.url) {
+      const link = document.createElement("a");
+      link.className = "client-card";
+      link.href = client.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", `Open ${client.name || "client"} channel`);
+      link.append(image);
+      slots.append(link);
     } else {
-      const longLink = $("a[href='index.html']", switcher);
-      const shortLink = $("a[href='short-form.html']", switcher);
-      if (longLink) longLink.hidden = !hasLong;
-      if (shortLink) shortLink.hidden = !hasShort;
+      const wrapper = document.createElement("div");
+      wrapper.className = "client-card-static";
+      wrapper.append(image);
+      slots.append(wrapper);
+    }
+  });
+}
+
+function makeProjectOverlay(project, index) {
+  const row = index + 1;
+  const frag = document.createDocumentFragment();
+
+  const videoWrap = document.createElement("div");
+  videoWrap.className = `project-video row-${row}`;
+  const player = document.createElement("mux-player");
+  player.setAttribute("playback-id", project.playbackId);
+  player.setAttribute("metadata-video-id", project.playbackId);
+  player.setAttribute("metadata-video-title", project.title);
+  player.setAttribute("preload", "metadata");
+  player.setAttribute("playsinline", "");
+  player.muted = true;
+  player.defaultMuted = true;
+  videoWrap.append(player);
+
+  const title = document.createElement("div");
+  title.className = `project-title row-${row}`;
+  title.textContent = project.title;
+
+  const duration = document.createElement("div");
+  duration.className = `project-duration row-${row}`;
+  duration.textContent = "--:--";
+
+  const updateDuration = () => {
+    duration.textContent = formatDuration(player.duration);
+  };
+  player.addEventListener("loadedmetadata", updateDuration);
+  player.addEventListener("durationchange", updateDuration);
+
+  const videoHit = document.createElement("button");
+  videoHit.type = "button";
+  videoHit.className = `project-open video-hit row-${row}`;
+  videoHit.setAttribute("aria-label", `Open ${project.title}`);
+  videoHit.addEventListener("click", () => openFullPlayer(project));
+
+  const playHit = document.createElement("button");
+  playHit.type = "button";
+  playHit.className = `project-open play-hit row-${row}`;
+  playHit.setAttribute("aria-label", `Play ${project.title}`);
+  playHit.addEventListener("click", () => openFullPlayer(project));
+
+  frag.append(videoWrap, title, duration, videoHit, playHit);
+  return { frag, player };
+}
+
+const ratios = new Map();
+let previewPlayers = [];
+let activePreview = null;
+
+function chooseActivePreview() {
+  let best = null;
+  let bestRatio = 0;
+  for (const player of previewPlayers) {
+    const ratio = ratios.get(player) || 0;
+    if (ratio > bestRatio) {
+      bestRatio = ratio;
+      best = player;
     }
   }
 
-  // If there is no portfolio work at all, hide Work navigation + section + hero work CTA.
-  if (!hasAnyWork) {
-    const work = $("#work");
-    if (work) work.hidden = true;
-    $$("a[href='#work']").forEach((link) => link.hidden = true);
+  if (bestRatio < 0.55) best = null;
+
+  for (const player of previewPlayers) {
+    if (player === best) {
+      if (activePreview !== player) {
+        player.muted = true;
+        if (typeof player.play === "function") player.play().catch(() => {});
+      }
+    } else if (typeof player.pause === "function" && !player.paused) {
+      player.pause();
+    }
   }
+  activePreview = best;
+}
 
-  // Play portfolio videos only while they are visible on screen.
-  const videos = document.querySelectorAll(".portfolio-video");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const video = entry.target;
-        if (entry.isIntersecting && entry.intersectionRatio > 0.35) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-    },
-    { threshold: [0, 0.35, 0.7] }
-  );
+function observePreviews() {
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const player = entry.target.querySelector("mux-player");
+      if (player) ratios.set(player, entry.intersectionRatio);
+    }
+    chooseActivePreview();
+  }, { threshold: [0, .25, .4, .55, .7, .85, 1] });
 
-  videos.forEach((video) => observer.observe(video));
+  $$(".project-video").forEach((wrap) => observer.observe(wrap));
+}
 
-  // Hero + CTA are always muted and designed to loop.
-  document.querySelectorAll(".panel-video").forEach((video) => {
-    video.muted = true;
-    video.play().catch(() => {});
+function renderProjects() {
+  const host = $("#project-overlays");
+  host.replaceChildren();
+  previewPlayers = [];
+
+  SITE_CONTENT.projects.slice(0, 3).forEach((project, index) => {
+    const { frag, player } = makeProjectOverlay(project, index);
+    host.append(frag);
+    previewPlayers.push(player);
   });
 
-  const year = $("#year");
-  if (year) year.textContent = new Date().getFullYear();
+  observePreviews();
 }
+
+function openFullPlayer(project) {
+  const dialog = $("#video-dialog");
+  const wrap = $("#dialog-player-wrap");
+  previewPlayers.forEach((p) => { if (typeof p.pause === "function") p.pause(); });
+
+  wrap.replaceChildren();
+  const player = document.createElement("mux-player");
+  player.setAttribute("playback-id", project.playbackId);
+  player.setAttribute("metadata-video-id", project.playbackId);
+  player.setAttribute("metadata-video-title", project.title);
+  player.setAttribute("playsinline", "");
+  player.setAttribute("autoplay", "any");
+  player.title = project.title;
+  wrap.append(player);
+
+  dialog.showModal();
+  requestAnimationFrame(() => { if (typeof player.play === "function") player.play().catch(() => {}); });
+}
+
+function closeFullPlayer() {
+  const dialog = $("#video-dialog");
+  $("#dialog-player-wrap").replaceChildren();
+  if (dialog.open) dialog.close();
+  chooseActivePreview();
+}
+
+function wireSocials() {
+  const x = $("#x-link");
+  const discord = $("#discord-link");
+  x.href = SITE_CONTENT.socials.x;
+  discord.href = SITE_CONTENT.socials.discord;
+}
+
+renderClients();
+renderProjects();
+wireSocials();
+
+$("#dialog-close").addEventListener("click", closeFullPlayer);
+$("#video-dialog").addEventListener("click", (event) => {
+  if (event.target === event.currentTarget) closeFullPlayer();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeFullPlayer();
+});

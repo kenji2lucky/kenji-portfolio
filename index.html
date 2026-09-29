@@ -1,3 +1,48 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#141411"><meta name="description" content="Kenji2lucky — video editor for gaming videos. Selected work and collaborations."><title>Kenji2lucky — Gaming Video Editor</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><script src="content.js" defer></script><script src="app.js" defer></script></head>
-<body><a class="skip" href="#works">Skip to featured works</a><main id="portfolio"></main><noscript><p class="noscript">Enable JavaScript to view the portfolio. Contact Kenji at <a href="https://x.com/Kenji2lucky">X</a> or <a href="https://discord.com/users/986068729307754496">Discord</a>.</p></noscript><dialog id="video-dialog" aria-labelledby="player-title"><div class="dialog-top"><h2 id="player-title"></h2><button id="close-player" type="button" aria-label="Close video">Close ×</button></div><div id="full-player"></div><p id="player-message" role="status"></p></dialog></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Kenji2Lucky — video editor for gaming content." />
+  <title>Kenji2Lucky — Gaming Video Editor</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+
+  <link rel="preload" as="image" href="./assets/hero/hero-banner.png" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@mux/mux-player" defer></script>
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+  <main id="top" class="site">
+    <section class="art-section hero" aria-label="Kenji2Lucky introduction">
+      <img class="section-art" src="./assets/hero/hero-banner.png" alt="Kenji2Lucky gaming video editor banner" />
+      <a class="hotspot hero-work" href="#featured" aria-label="See my work"></a>
+      <a class="hotspot hero-contact" href="#contact" aria-label="Get in touch"></a>
+    </section>
+
+    <section id="clients" class="art-section clients-section" aria-label="Clients and collaborations" hidden>
+      <img class="section-art" src="./assets/clients/clients-background.png" alt="" aria-hidden="true" />
+      <div id="client-slots" class="client-slots"></div>
+    </section>
+
+    <section id="featured" class="art-section featured-section" aria-label="Featured works">
+      <img class="section-art" src="./assets/featured/featured-shell.png" alt="" aria-hidden="true" />
+      <div id="project-overlays"></div>
+    </section>
+
+    <footer id="contact" class="art-section footer-section" aria-label="Contact Kenji2Lucky">
+      <img class="section-art" src="./assets/footer/footer-banner.png" alt="Kenji2Lucky contact banner" />
+      <a id="discord-link" class="hotspot footer-discord" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open Kenji2Lucky on Discord"></a>
+      <a id="x-link" class="hotspot footer-x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open Kenji2Lucky on X"></a>
+    </footer>
+  </main>
+
+  <dialog id="video-dialog" class="video-dialog">
+    <button id="dialog-close" class="dialog-close" type="button" aria-label="Close video">×</button>
+    <div id="dialog-player-wrap" class="dialog-player-wrap"></div>
+  </dialog>
+</body>
+</html>
